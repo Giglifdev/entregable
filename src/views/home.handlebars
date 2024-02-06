@@ -1,0 +1,28 @@
+<div>
+
+  <h1>Welcome {{user.name}}!</h1>
+  <p>Email: {{user.email}}</p>
+  <p>Age: {{user.age}}</p>
+  <p>rol: {{user.role}}</p>
+  <a href="/api/sessions/logout"><button>Finish Sesion</button></a>
+  <a href="http://localhost:8080/cart"><button>Go to cart</button></a>
+
+  {{#each products}}
+    <p>Title: {{this.title}}</p>
+    <p>Description: {{this.description}}</p>
+    <p>Code: {{this.code}}</p>
+    <p>$ {{this.price}}</p>
+    <p>Stock: {{this.stock}}</p>
+    <p>Category: {{this.category}}</p>
+    <button onclick="addToCart('{{this._id}}')">Add to Cart</button>
+  {{/each}}
+  {{#if hasPrevPage}}
+    <a href="/products?page={{prevPage}}"><button>Previous Page</button></a>
+  {{/if}}
+  {{#if hasNextPage}}
+    <a href="/products?page={{nextPage}}"><button>Next Page</button></a>
+  {{/if}}
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/cart.js"></script>

@@ -1,0 +1,25 @@
+<div>
+  <h1>Carts {{user.first_name}}!</h1>
+  <button onclick="emptyCart('{{user.cart.id._id}}')">Empty Cart</button>
+  <button><a href="http://localhost:8080/products">Return to Products</a></button>
+
+  {{#each cart.productsCart}}
+    <p>Title: {{this.productID.title}}</p>
+    <p>Description: {{this.productID.description}}</p>
+    <p>Code: {{this.productID.code}}</p>
+    <p>$ {{this.productID.price}}</p>
+    <p>Stock: {{this.productID.stock}}</p>
+    <p>Quantity: {{this.quantity}}</p>
+    <button onclick="addToCart('{{this.productID._id}}')">+</button>
+    <button onclick="removeQuantity('{{this.productID._id}}')">-</button>
+    <button onclick="removeProduct('{{this.productID._id}}')">X</button>
+  {{/each}}
+
+  {{#if cart.productsCart.length}}
+    <button onclick="purchase('{{user.cart.id._id}}')">Complete Purchase</button>
+  {{/if}}
+
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/js/cart.js"></script>

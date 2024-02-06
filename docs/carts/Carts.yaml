@@ -1,0 +1,175 @@
+paths:
+  /api/carts:
+    post:
+      summary: Create new CArt
+      tags:
+        - Carts
+      responses:
+        "200":
+          description: The cart was created successfully
+        "500":
+          description: An error occurred on the server
+
+  /api/carts/{cid}:
+    get:
+      summary: Get products in a cart by ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: Cart ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: cart product
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Carts"
+        "400":
+          description: cart not found
+        "500":
+          description: An error occurred on the server
+  /api/carts/product/{pid}:
+    post:
+      summary: Add the product to the cart. If the product is already in the cart, only add one unit of the quantity property
+      tags:
+        - Carts
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: product ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Product added to cart
+        "409":
+          description: You cannot purchase a user-created product
+        "400":
+          description: cart not found
+        "500":
+          description: server error
+
+  /api/carts/removeQuantity/{pid}:
+    post:
+      summary: remove quantity
+      tags:
+        - Carts
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: cart ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Product quantity updated
+        "400":
+          description: product not found
+        "500":
+          description: server error
+
+  /api/carts/remove/{pid}:
+    delete:
+      summary: remove cart id
+      tags:
+        - Carts
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: cart id
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Product successfully removed
+        "400":
+          description: Cart or product not found
+        "500":
+          description: server error
+
+  /api/carts/empty/{cid}:
+    delete:
+      summary: empty cart
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Cart successfully emptied
+        "400":
+          description: cart not found
+        "500":
+          description: server error
+
+  /api/carts/purchase/{cid}:
+    post:
+      summary: Make a purchase
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: cart ID
+          schema:
+            type: string
+            format: uuid
+      responses:
+        "200":
+          description: Purchase made successfully
+        "400":
+          description: cart not found
+        "500":
+          description: server error
+
+components:
+  schemas:
+    Carts:
+      type: object
+      properties:
+        productsCart:
+          type: array
+          items:
+            type: object
+            properties:
+              productID:
+                type: string
+                format: uuid
+                description: ID Product
+              quantity:
+                type: number
+                description: Cart Quantity
+          description: Cart List
+        userId:
+          type: string
+          format: uuid
+          description: User ID
+      required:
+        - productsCart
+        - userId
+      example:
+        productsCart:
+          - productID: ""
+            quantity: 2
+          - productID: ""
+            quantity: 1
+        userId: ""
